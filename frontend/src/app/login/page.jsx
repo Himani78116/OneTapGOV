@@ -42,7 +42,7 @@ export default function Login() {
             <button onClick={handleLogin}>Login</button>
 
             <div>
-              <p> Don't have an account?</p>
+              <p> Don&apos;t have an account?</p>
               <p onClick={() => router.push('/signup')}>Sign Up</p>
             </div>
 

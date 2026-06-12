@@ -5,32 +5,38 @@ from services.supabase_service import supabase
 from services.profile_service import ProfileService
 from services.gemini_service import GeminiService
 from config.basic_questions import BASIC_FIELDS, FIELD_DESCRIPTIONS
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 gemini_service = GeminiService()
+security = HTTPBearer()
+
 
 class ChatRequest(BaseModel):
     message: Optional[str] = None
 
-async def get_current_user(authorization: str = Header(None)):
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Missing authorization header")
-    
-    try:
-        token = authorization.replace("Bearer ", "")
-        res = supabase.auth.get_user(token)
-        return res.user
-    except Exception as e:
-        raise HTTPException(status_code=401, detail=str(e))
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    token = credentials.credentials
+        
+        # Call supabase to get user
+    res = supabase.auth.get_user(token)
+        
+    if not res or not res.user:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+            
+    return res.user
 
 @router.post("")
 async def chat_endpoint(request: ChatRequest, user = Depends(get_current_user)):
     # 1. Fetch current profile
-    profile_res = supabase.table("basic_user_info").select("*").eq("user_id", user.id).execute()
+    profile_res = supabase.table("user_basic_info").select("*").eq("user_id", user.id).execute()
     
     if not profile_res.data:
         # Create initial record if missing
-        supabase.table("basic_user_info").insert({"user_id": user.id}).execute()
+        supabase.table("user_basic_info").insert({"user_id": user.id}).execute()
         profile = {}
     else:
         profile = profile_res.data[0]
@@ -49,7 +55,7 @@ async def chat_endpoint(request: ChatRequest, user = Depends(get_current_user)):
         
         if extracted_data.get(missing_field):
             # Update profile in Supabase
-            supabase.table("basic_user_info").update(extracted_data).eq("user_id", user.id).execute()
+            supabase.table("user_basic_info").update(extracted_data).eq("user_id", user.id).execute()
             
             # Refresh profile and find NEXT missing field
             profile.update(extracted_data)
@@ -75,7 +81,5 @@ async def chat_endpoint(request: ChatRequest, user = Depends(get_current_user)):
     )
     
     return {
-        "status": "asking_basic",
-        "field": missing_field,
-        "question": question
+        "working": True
     }
