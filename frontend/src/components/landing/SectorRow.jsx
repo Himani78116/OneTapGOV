@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { ChevronDownIcon, SectorIcon } from "../ui/Icons";
 
 export default function SectorRow({ sector, isLast }) {
   const [open, setOpen] = useState(false);
@@ -42,11 +43,11 @@ export default function SectorRow({ sector, isLast }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "22px",
+          color: isActive ? "var(--blue)" : "var(--teal)",
           flexShrink: 0,
           transition: "all 200ms ease",
         }}>
-          {sector.icon}
+          <SectorIcon type={sector.id} size={24} />
         </div>
 
         {/* Text */}
@@ -65,13 +66,12 @@ export default function SectorRow({ sector, isLast }) {
             {sector.schemes.length} Schemes
           </span>
           <span style={{
-            fontSize: "16px",
             color: isActive ? "var(--blue)" : "var(--text-muted)",
             transform: open ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 250ms ease, color 200ms ease",
             display: "inline-block",
           }}>
-            ⌄
+            <ChevronDownIcon size={18} />
           </span>
         </div>
       </button>

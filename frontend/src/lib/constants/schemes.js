@@ -2,7 +2,6 @@
 export const SECTORS = [
     {
         id: "students",
-        icon: "🎓",
         title: "Students",
         description:
             "Scholarships, merit programs, education loans and academic support.",
@@ -16,7 +15,6 @@ export const SECTORS = [
     },
     {
         id: "women",
-        icon: "👩",
         title: "Women",
         description:
             "Financial support, savings schemes, welfare initiatives and empowerment programs.",
@@ -30,7 +28,6 @@ export const SECTORS = [
     },
     {
         id: "farmers",
-        icon: "🌾",
         title: "Farmers",
         description:
             "Agricultural assistance, insurance programs, subsidies and financial support.",

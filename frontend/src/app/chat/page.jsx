@@ -2,6 +2,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useSpeech } from '@/lib/useSpeech';
+import { MicIcon, StopIcon } from '@/components/ui/Icons';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -158,7 +159,7 @@ export default function ChatPage() {
             }`}
             title="Speak"
           >
-            {isListening ? '🛑' : '🎤'}
+            {isListening ? <StopIcon size={18} /> : <MicIcon size={18} />}
           </button>
 
           <button

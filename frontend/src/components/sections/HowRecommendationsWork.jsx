@@ -3,15 +3,8 @@
 import SectionLabel from "../ui/SectionLabel";
 import SectionHeading from "../ui/SectionHeading";
 import FadeUp from "../ui/FadeUp";
+import { ArrowRightIcon, FlowIcon, ShieldIcon } from "../ui/Icons";
 import { FLOW_NODES } from "../../lib/constants/schemes";
-
-const ICONS = {
-  info: "👤",
-  rules: "🛡",
-  database: "🗄",
-  engine: "⚙️",
-  matches: "✅",
-};
 
 export default function HowRecommendationsWork() {
   return (
@@ -49,9 +42,9 @@ export default function HowRecommendationsWork() {
                     alignItems: "center",
                     justifyContent: "center",
                     margin: "0 auto 16px",
-                    fontSize: "24px",
+                    color: i === FLOW_NODES.length - 1 ? "var(--blue)" : "var(--teal)",
                   }}>
-                    {ICONS[node.id]}
+                    <FlowIcon type={node.id} size={26} />
                   </div>
 
                   <p style={{ fontSize: "14px", fontWeight: "600", color: "var(--navy)", marginBottom: "6px" }}>
@@ -70,11 +63,10 @@ export default function HowRecommendationsWork() {
                   alignItems: "center",
                   paddingTop: "20px",
                   color: "var(--border-mid)",
-                  fontSize: "18px",
                   flexShrink: 0,
                   padding: "20px 4px 0",
                 }}>
-                  →
+                  <ArrowRightIcon size={18} />
                 </div>
               )}
             </div>
@@ -91,8 +83,9 @@ export default function HowRecommendationsWork() {
             borderRadius: "10px",
             textAlign: "center",
           }}>
-            <p style={{ fontSize: "15px", color: "#166534", fontWeight: "500" }}>
-              🛡 Every recommendation includes an explanation of why you qualify.
+            <p style={{ fontSize: "15px", color: "#166534", fontWeight: "500", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+              <ShieldIcon size={18} />
+              Every recommendation includes an explanation of why you qualify.
             </p>
           </div>
         </FadeUp>

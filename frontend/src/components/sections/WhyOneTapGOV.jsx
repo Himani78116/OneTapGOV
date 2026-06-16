@@ -3,6 +3,7 @@
 import SectionLabel from "../ui/SectionLabel";
 import SectionHeading from "../ui/SectionHeading";
 import FadeUp from "../ui/FadeUp";
+import { CheckIcon, XIcon } from "../ui/Icons";
 import { COMPARISON_ROWS } from "../../lib/constants/schemes";
 
 export default function WhyOneTapGOV() {
@@ -68,7 +69,9 @@ export default function WhyOneTapGOV() {
                     alignItems: "center",
                     gap: "12px",
                   }}>
-                    <span style={{ color: "#EF4444", fontSize: "14px", flexShrink: 0 }}>✗</span>
+                    <span style={{ color: "#EF4444", flexShrink: 0 }}>
+                      <XIcon size={16} />
+                    </span>
                     <span style={{ fontSize: "15px", color: "var(--text-muted)" }}>{row.traditional}</span>
                   </div>
 
@@ -79,7 +82,9 @@ export default function WhyOneTapGOV() {
                     alignItems: "center",
                     gap: "12px",
                   }}>
-                    <span style={{ color: "#22C55E", fontSize: "14px", flexShrink: 0 }}>✓</span>
+                    <span style={{ color: "#22C55E", flexShrink: 0 }}>
+                      <CheckIcon size={16} />
+                    </span>
                     <span style={{ fontSize: "15px", color: "var(--navy)", fontWeight: "500" }}>{row.onetap}</span>
                   </div>
                 </div>

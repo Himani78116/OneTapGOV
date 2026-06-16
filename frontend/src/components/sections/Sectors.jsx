@@ -4,6 +4,7 @@ import SectionLabel from "../ui/SectionLabel";
 import SectionHeading from "../ui/SectionHeading";
 import FadeUp from "../ui/FadeUp";
 import SectorRow from "../landing/SectorRow";
+import { ArrowRightIcon } from "../ui/Icons";
 import { SECTORS } from "../../lib/constants/schemes";
 
 export default function Sectors() {
@@ -55,7 +56,10 @@ export default function Sectors() {
               onMouseEnter={e => e.currentTarget.style.textDecoration = "underline"}
               onMouseLeave={e => e.currentTarget.style.textDecoration = "none"}
             >
-              View all sectors and schemes →
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                View all sectors and schemes
+                <ArrowRightIcon size={15} />
+              </span>
             </a>
           </div>
         </FadeUp>

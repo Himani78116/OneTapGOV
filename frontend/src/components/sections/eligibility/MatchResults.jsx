@@ -1,10 +1,14 @@
 "use client";
 
+import { SearchIcon } from "../../ui/Icons";
+
 export default function MatchResults({ matches }) {
   if (!matches || matches.length === 0) {
     return (
       <div style={{ textAlign: "center", padding: "48px 24px", color: "var(--text-muted)" }}>
-        <div style={{ fontSize: "32px", marginBottom: "12px" }}>🔍</div>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px", color: "var(--blue)" }}>
+          <SearchIcon size={32} />
+        </div>
         <p style={{ fontSize: "14px" }}>Adjust your profile to see matching schemes.</p>
       </div>
     );

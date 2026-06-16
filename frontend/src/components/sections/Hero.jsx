@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import Button from "../ui/Button";
 import FadeUp from "../ui/FadeUp";
+import { CheckIcon } from "../ui/Icons";
 import { SCHEME_MATCHES } from "../../lib/constants/schemes";
 
 const roles = ["Student", "Farmer", "Woman Entrepreneur", "Senior Citizen", "Business Owner", "Job Seeker"];
@@ -60,9 +60,10 @@ function EligibilityPreviewPanel() {
           border: "1px solid var(--border)",
           borderRadius: "16px",
           overflow: "hidden",
-          boxShadow: "0 4px 24px rgba(15,23,42,0.06)",
+          boxShadow: "0 20px 52px rgba(15,23,42,0.12)",
           fontSize: "14px",
           animation: cardAnim,
+          width: "100%",
         }}
         onAnimationEnd={() => {
           if (cardAnim.includes("cardEntry")) {
@@ -76,9 +77,9 @@ function EligibilityPreviewPanel() {
           <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>Tell us about yourself to get started</p>
         </div>
 
-        <div className="hero-preview-panel__body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "320px" }}>
+        <div className="hero-preview-panel__body" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", minHeight: "390px" }}>
           {/* Left: role selector */}
-          <div style={{ padding: "20px 24px", borderRight: "1px solid var(--border)" }}>
+          <div style={{ padding: "28px 30px", borderRight: "1px solid var(--border)" }}>
             {roles.map((role) => (
               <label
                 key={role}
@@ -115,7 +116,7 @@ function EligibilityPreviewPanel() {
           </div>
 
           {/* Right: matches */}
-          <div style={{ padding: "20px 24px", opacity: fade ? 1 : 0, transition: "opacity 300ms ease" }}>
+          <div style={{ padding: "28px 30px", opacity: fade ? 1 : 0, transition: "opacity 300ms ease" }}>
             <p style={{ fontSize: "11px", fontWeight: "600", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "14px" }}>
               Potential Matches
             </p>
@@ -151,7 +152,9 @@ function EligibilityPreviewPanel() {
               </p>
               {documents.map((doc) => (
                 <div key={doc} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-                  <span style={{ color: "var(--teal)", fontSize: "12px" }}>✓</span>
+                  <span style={{ color: "var(--teal)" }}>
+                    <CheckIcon size={12} />
+                  </span>
                   <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>{doc}</span>
                 </div>
               ))}
@@ -171,59 +174,78 @@ export default function Hero() {
       alignItems: "center",
       paddingTop: "96px",
       paddingBottom: "80px",
-      background: "var(--bg)",
+      background: "linear-gradient(180deg, #F8FAFC 0%, #EEF6FF 52%, #F8FAFC 100%)",
     }}>
       <div className="landing-container" style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "0 24px", width: "100%" }}>
-        <div className="landing-hero__grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "80px", alignItems: "center" }}>
+        <div className="landing-hero__grid" style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "34px",
+          textAlign: "center",
+        }}>
 
-          {/* Left */}
-          <div>
-            <FadeUp delay={0}>
-              <p style={{ fontSize: "12px", fontWeight: "600", color: "var(--teal)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "24px" }}>
-                Discover. Understand. Apply.
-              </p>
-            </FadeUp>
+          {/* Center laptop preview */}
+          <FadeUp delay={100} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <div className="hero-laptop" style={{
+              width: "min(1080px, 100%)",
+              margin: "0 auto",
+            }}>
+              <div style={{
+                padding: "18px 18px 22px",
+                borderRadius: "28px",
+                background: "linear-gradient(135deg, #0F172A 0%, #1E3A8A 55%, #1488A6 100%)",
+                boxShadow: "0 34px 80px rgba(15,23,42,0.22)",
+                border: "1px solid rgba(255,255,255,0.22)",
+              }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "7px",
+                  height: "28px",
+                  padding: "0 4px 10px",
+                }}>
+                  <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#F87171" }} />
+                  <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#FBBF24" }} />
+                  <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#34D399" }} />
+                </div>
+                <EligibilityPreviewPanel />
+              </div>
+              <div style={{
+                width: "72%",
+                height: "18px",
+                margin: "0 auto",
+                borderRadius: "0 0 28px 28px",
+                background: "linear-gradient(180deg, #CBD5E1 0%, #94A3B8 100%)",
+                boxShadow: "0 18px 42px rgba(15,23,42,0.18)",
+              }} />
+              <div style={{
+                width: "42%",
+                height: "10px",
+                margin: "0 auto",
+                borderRadius: "0 0 18px 18px",
+                background: "#E2E8F0",
+              }} />
+            </div>
+          </FadeUp>
 
+          {/* Center headline */}
+          <div style={{ maxWidth: "940px", margin: "0 auto" }}>
             <FadeUp delay={100}>
               <h1 style={{
-                fontSize: "clamp(36px, 5vw, 56px)",
-                fontWeight: "800",
+                fontSize: "clamp(40px, 3vw, 25px)",
+                fontWeight: "650",
                 color: "var(--navy)",
                 lineHeight: "1.1",
-                letterSpacing: "-0.03em",
-                marginBottom: "24px",
+                letterSpacing: "0.02em",
+                marginBottom: "0",
+                textTransform: "uppercase",
               }}>
-                Find Government{" "}
-                <span style={{ color: "var(--blue)" }}>Schemes</span>{" "}
-                Without the Confusion.
+                Find government schemes without the confusion and hassle.
               </h1>
             </FadeUp>
-
-            <FadeUp delay={200}>
-              <p style={{ fontSize: "18px", color: "var(--text-muted)", lineHeight: "1.7", marginBottom: "40px", maxWidth: "480px" }}>
-                Discover benefits you may qualify for, understand eligibility requirements, and prepare applications through one guided experience.
-              </p>
-            </FadeUp>
-
-            <FadeUp delay={300}>
-              <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
-                <Button variant="primary" href="/signup">Get Started</Button>
-                <Button variant="secondary" href="#how-it-works">Learn How It Works →</Button>
-              </div>
-            </FadeUp>
-
-            <FadeUp delay={400}>
-              <p style={{ fontSize: "13px", color: "var(--text-light)", marginTop: "24px", display: "flex", alignItems: "center", gap: "6px" }}>
-                <span style={{ color: "var(--teal)" }}>🛡</span>
-                Trusted by citizens. Built on official data.
-              </p>
-            </FadeUp>
           </div>
-
-          {/* Right */}
-          <FadeUp delay={200} style={{ width: "100%" }}>
-            <EligibilityPreviewPanel />
-          </FadeUp>
         </div>
       </div>
     </section>

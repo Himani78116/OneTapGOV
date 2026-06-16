@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { DiamondIcon, StepIcon } from "../ui/Icons";
 
 export default function StepCard({ step }) {
   const [hovered, setHovered] = useState(false);
-  const icons = { "01": "🔍", "02": "✅", "03": "📋" };
 
   return (
     <div
@@ -29,7 +29,9 @@ export default function StepCard({ step }) {
         gap: "14px",
         height: "32px",
       }}>
-        <span style={{ fontSize: "28px", lineHeight: "1" }}>{icons[step.number]}</span>
+        <span style={{ color: "var(--blue)" }}>
+          <StepIcon step={step.number} size={28} />
+        </span>
         <span style={{
           fontSize: "12px",
           fontWeight: "700",
@@ -80,7 +82,9 @@ export default function StepCard({ step }) {
               transform: hovered ? "translateY(0)" : "translateY(8px)",
               transition: `opacity 300ms ease ${index * 60}ms, transform 300ms ease ${index * 60}ms`,
             }}>
-              <span style={{ color: "var(--teal)", fontSize: "11px" }}>◆</span>
+              <span style={{ color: "var(--teal)" }}>
+                <DiamondIcon size={7} />
+              </span>
               {cap}
             </li>
           ))}
