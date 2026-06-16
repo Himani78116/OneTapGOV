@@ -37,7 +37,7 @@
   --font: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
 
   --section-py: 96px;
-  --container: 1200px;
+  --container: min(1360px, calc(100vw - 48px));
 
   --background: #ffffff;
   --foreground: #171717;
@@ -52,22 +52,205 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  width: 100%;
+  min-height: 100vh;
   font-family: var(--font);
   background-color: var(--bg);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
   max-width: var(--container);
+  width: 100%;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .section {
   padding: var(--section-py) 0;
+}
+
+main {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.landing-container {
+  width: 100%;
+}
+
+.landing-navbar__auth a:first-child {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+.landing-navbar__auth a:first-child:hover {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --container: min(1480px, calc(100vw - 80px));
+  }
+}
+
+@media (max-width: 1100px) {
+  .landing-navbar__links {
+    gap: 20px !important;
+  }
+
+  .landing-hero__grid {
+    gap: 48px !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  #why-it-matters > div > div {
+    gap: 56px !important;
+    grid-template-columns: 1fr 0.8fr !important;
+  }
+
+  footer > div > div:first-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --section-py: 72px;
+    --container: min(100%, calc(100vw - 32px));
+  }
+
+  .landing-navbar__inner {
+    height: 60px !important;
+    padding: 0 16px !important;
+  }
+
+  .landing-navbar__links {
+    display: none !important;
+  }
+
+  .landing-navbar__auth {
+    gap: 8px !important;
+  }
+
+  .landing-navbar__auth a {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  .landing-hero {
+    min-height: auto !important;
+    padding-top: 104px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .landing-hero__grid,
+  #why-it-matters > div > div,
+  #eligibility-preview > div > div:last-child > div,
+  #why-onetapgov [style*="grid-template-columns"],
+  footer > div > div:first-child {
+    grid-template-columns: 1fr !important;
+  }
+
+  .landing-hero__grid {
+    gap: 44px !important;
+  }
+
+  .hero-preview-panel {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  #why-it-matters > div > div > div:last-child {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  #how-recommendations-work > div > div:nth-of-type(2) {
+    flex-direction: column !important;
+    gap: 28px !important;
+  }
+
+  #how-recommendations-work > div > div:nth-of-type(2) > div {
+    width: 100% !important;
+  }
+
+  #how-recommendations-work > div > div:nth-of-type(2) > div > div:last-child {
+    display: none !important;
+  }
+
+  #eligibility-preview > div > div:last-child > div > div:first-child {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  #why-onetapgov [style*="border-right"] {
+    border-right: 0 !important;
+  }
+
+  footer > div > div:last-child {
+    align-items: flex-start !important;
+  }
+
+  footer > div > div:last-child p:last-child {
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section-py: 56px;
+    --container: min(100%, calc(100vw - 24px));
+  }
+
+  .landing-navbar__auth a:first-child {
+    display: none !important;
+  }
+
+  .landing-hero {
+    padding-top: 92px !important;
+  }
+
+  .landing-hero h1 {
+    font-size: 40px !important;
+  }
+
+  .hero-preview-panel__body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-preview-panel__body > div:first-child {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  #sectors button {
+    align-items: flex-start !important;
+    padding: 20px 12px !important;
+  }
+
+  #sectors button > div:last-child {
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+  }
+
+  #sectors [style*="padding-left: 88px"] {
+    padding-left: 12px !important;
+  }
+
+  footer > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }

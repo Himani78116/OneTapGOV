@@ -54,6 +54,7 @@ function EligibilityPreviewPanel() {
       `}</style>
 
       <div
+        className="hero-preview-panel"
         style={{
           background: "var(--surface)",
           border: "1px solid var(--border)",
@@ -75,7 +76,7 @@ function EligibilityPreviewPanel() {
           <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>Tell us about yourself to get started</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "320px" }}>
+        <div className="hero-preview-panel__body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "320px" }}>
           {/* Left: role selector */}
           <div style={{ padding: "20px 24px", borderRight: "1px solid var(--border)" }}>
             {roles.map((role) => (
@@ -164,7 +165,7 @@ function EligibilityPreviewPanel() {
 
 export default function Hero() {
   return (
-    <section style={{
+    <section className="landing-hero" style={{
       minHeight: "100vh",
       display: "flex",
       alignItems: "center",
@@ -172,8 +173,8 @@ export default function Hero() {
       paddingBottom: "80px",
       background: "var(--bg)",
     }}>
-      <div style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "0 24px", width: "100%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "80px", alignItems: "center" }}>
+      <div className="landing-container" style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "0 24px", width: "100%" }}>
+        <div className="landing-hero__grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "80px", alignItems: "center" }}>
 
           {/* Left */}
           <div>
