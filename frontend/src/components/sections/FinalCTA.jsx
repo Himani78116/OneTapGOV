@@ -7,8 +7,7 @@ export default function FinalCTA() {
   return (
     <section style={{
       padding: "120px 0",
-      background: "var(--surface)",
-      borderTop: "1px solid var(--border)",
+      background: "linear-gradient(180deg, #F8FAFC 0%, #EEF6FF 100%)",
     }}>
       <div style={{
         maxWidth: "640px",
