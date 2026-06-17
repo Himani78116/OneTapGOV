@@ -10,9 +10,7 @@ export default function WhyOneTapGOV() {
   return (
     <section id="why-onetapgov" style={{
       padding: "96px 0",
-      background: "var(--surface)",
-      borderTop: "1px solid var(--border)",
-      borderBottom: "1px solid var(--border)",
+      background: "#FFFFFF",
     }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "0 24px" }}>
 
@@ -28,8 +26,8 @@ export default function WhyOneTapGOV() {
         <FadeUp delay={100}>
           <div style={{
             border: "1px solid var(--border)",
-            borderRadius: "12px",
-            overflow: "hidden",
+            borderRadius: "8px",
+            background: "#fff",
           }}>
             {/* Column headers */}
             <div style={{
@@ -58,17 +56,10 @@ export default function WhyOneTapGOV() {
                   borderTop: "1px solid var(--border)",
                   transition: "background 150ms",
                 }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#F8FAFC"}
+                  onMouseEnter={e => e.currentTarget.style.background = "#FAFBFC"}
                   onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                 >
-                  {/* Traditional */}
-                  <div style={{
-                    padding: "20px 32px",
-                    borderRight: "1px solid var(--border)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                  }}>
+                  <div>
                     <span style={{ color: "#EF4444", flexShrink: 0 }}>
                       <XIcon size={16} />
                     </span>

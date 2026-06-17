@@ -1,32 +1,32 @@
 "use client";
+
 import { useState } from "react";
-import { ChevronDownIcon, SectorIcon } from "../ui/Icons";
+import { SectorIcon } from "../ui/Icons";
 
 export default function SectorRow({ sector, isLast }) {
-  const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  const isActive = open || hovered;
+  const isActive = hovered;
+
+  // ✅ Take only first 2 schemes
+  const previewSchemes = (sector.schemes || []).slice(0, 2);
 
   return (
-    <div 
+    <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ 
+      style={{
         borderBottom: isLast ? "none" : `1px solid ${hovered ? "var(--blue)" : "var(--border)"}`,
         borderLeft: isActive ? "3px solid var(--blue)" : "3px solid transparent",
         background: isActive ? "#F8FAFF" : "transparent",
         transition: "all 200ms ease",
       }}
     >
-      <button
-        onClick={() => setOpen(!open)}
+      {/* NON-CLICKABLE ROW */}
+      <div
         style={{
           width: "100%",
-          background: "none",
-          border: "none",
           padding: "24px 20px",
-          cursor: "pointer",
           display: "flex",
           alignItems: "center",
           gap: "20px",
@@ -34,78 +34,49 @@ export default function SectorRow({ sector, isLast }) {
         }}
       >
         {/* Icon */}
-        <div style={{
-          width: "48px",
-          height: "48px",
-          borderRadius: "12px",
-          background: isActive ? "#EFF6FF" : "var(--bg)",
-          border: `1px solid ${isActive ? "#BFDBFE" : "var(--border)"}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: isActive ? "var(--blue)" : "var(--teal)",
-          flexShrink: 0,
-          transition: "all 200ms ease",
-        }}>
+        <div
+          style={{
+            width: "48px",
+            height: "48px",
+            borderRadius: "12px",
+            background: isActive ? "#EFF6FF" : "var(--bg)",
+            border: `1px solid ${isActive ? "#BFDBFE" : "var(--border)"}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: isActive ? "var(--blue)" : "var(--teal)",
+            flexShrink: 0,
+            transition: "all 200ms ease",
+          }}
+        >
           <SectorIcon type={sector.id} size={24} />
         </div>
 
         {/* Text */}
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: "17px", fontWeight: "600", color: isActive ? "var(--blue)" : "var(--navy)", transition: "color 200ms ease", marginBottom: "2px" }}>
+          <p
+            style={{
+              fontSize: "17px",
+              fontWeight: "600",
+              color: isActive ? "var(--blue)" : "var(--navy)",
+              transition: "color 200ms ease",
+              marginBottom: "4px",
+            }}
+          >
             {sector.title}
           </p>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)", transition: "color 200ms ease" }}>
-            {sector.description}
+
+          {/* ✅ SHOW ONLY 2 + "and many more" */}
+          <p
+            style={{
+              fontSize: "14px",
+              color: "var(--text-muted)",
+              lineHeight: "1.5",
+            }}
+          >
+            {previewSchemes.join(", ")}
+            {sector.schemes.length > 2 && " and many more"}
           </p>
-        </div>
-
-        {/* Badge + chevron */}
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0 }}>
-          <span style={{ fontSize: "12px", color: isActive ? "var(--blue)" : "var(--text-muted)", transition: "color 200ms ease" }}>
-            {sector.schemes.length} Schemes
-          </span>
-          <span style={{
-            color: isActive ? "var(--blue)" : "var(--text-muted)",
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 250ms ease, color 200ms ease",
-            display: "inline-block",
-          }}>
-            <ChevronDownIcon size={18} />
-          </span>
-        </div>
-      </button>
-
-      {/* Expanded schemes */}
-      <div style={{
-        maxHeight: open ? "300px" : "0",
-        overflow: "hidden",
-        transition: "max-height 300ms ease",
-      }}>
-        <div style={{
-          paddingBottom: "24px",
-          paddingLeft: "88px",
-          paddingRight: "20px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "8px",
-        }}>
-          {sector.schemes.map((scheme, i) => (
-            <span key={scheme} style={{
-              fontSize: "13px",
-              padding: "6px 14px",
-              borderRadius: "20px",
-              background: "#EFF6FF",
-              border: "1px solid #BFDBFE",
-              color: "var(--blue)",
-              fontWeight: "500",
-              opacity: open ? 1 : 0,
-              transform: open ? "translateY(0)" : "translateY(6px)",
-              transition: `all 200ms ease ${i * 40}ms`,
-            }}>
-              {scheme}
-            </span>
-          ))}
         </div>
       </div>
     </div>

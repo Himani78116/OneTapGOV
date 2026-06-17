@@ -191,9 +191,7 @@ export default function WhyItMatters() {
       id="why-it-matters"
       style={{
         padding: "96px 0",
-        background: "var(--surface)",
-        borderTop: "1px solid var(--border)",
-        borderBottom: "1px solid var(--border)",
+        background: "#F8FAFC",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
