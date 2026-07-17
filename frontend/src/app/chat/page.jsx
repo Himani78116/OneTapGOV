@@ -14,28 +14,34 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, []);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  const fetchInitialQuestion = useCallback(async (token) => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/backend/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({})
-      });
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;                                                                                              
+                                                                                                                                                       
+  const fetchInitialQuestion = useCallback(async (token) => {                                                                                          
+    setLoading(true);                                                                                                                                  
+    try {                                                                                                                                              
+      const res = await fetch(`${backendUrl}/chat`, {                                                                                                  
+        method: 'POST',                                                                                                                                
+        headers: {                                                                                                                                     
+          'Content-Type': 'application/json',                                                                                                          
+          'Authorization': `Bearer ${token}`                                                                                                           
+        },                                                                                                                                             
+        body: JSON.stringify({})                                                                                                                       
+      }); 
       const data = await res.json();
       if (data.question) {
         setMessages([{ role: 'assistant', content: data.question }]);
-        speak(data.question, userLanguage);
+        const lang = data.preferred_language || userLanguage;
+        if (data.preferred_language) {
+          setUserLanguage(data.preferred_language);
+        }
+        speak(data.question, lang);
       }
     } catch (error) {
       console.error("Failed to fetch initial question", error);
@@ -69,28 +75,29 @@ export default function ChatPage() {
     const userMessage = { role: 'user', content: messageToSend };
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/backend/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ message: messageToSend })
-      });
-      
-      const data = await res.json();
+    setLoading(true);                                                                                                                                  
+                                                                                                                                                       
+    try {                                                                                                                                              
+      const res = await fetch(`${backendUrl}/chat`, {                                                                                                  
+        method: 'POST',                                                                                                                                
+        headers: {                                                                                                                                     
+          'Content-Type': 'application/json',                                                                                                          
+          'Authorization': `Bearer ${session.access_token}`                                                                                            
+        },                                                                                                                                             
+        body: JSON.stringify({ message: messageToSend })                                                                                               
+      });                                                                                                                                              
+                                                                                                                                                       
+      const data = await res.json(); 
       
       if (data.question) {
         setMessages(prev => [...prev, { role: 'assistant', content: data.question }]);
         
-        if (data.profile?.preferred_language) {
-            setUserLanguage(data.profile.preferred_language);
+        const lang = data.preferred_language || userLanguage;
+        if (data.preferred_language) {
+            setUserLanguage(data.preferred_language);
         }
 
-        speak(data.question, data.profile?.preferred_language || userLanguage);
+        speak(data.question, lang);
       }
     } catch (error) {
       console.error("Error sending message", error);
