@@ -9,7 +9,10 @@ from config.farmer_questions import FARMER_FIELDS, FARMER_FIELD_DESCRIPTIONS
 from config.student_questions import STUDENT_FIELDS, STUDENT_FIELD_DESCRIPTIONS
 from config.women_questions import WOMEN_FIELDS, WOMEN_FIELD_DESCRIPTIONS
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 groq_service = GroqService()
@@ -108,46 +111,49 @@ async def chat_endpoint(request: ChatRequest, user = Depends(get_current_user)):
         sector_fields = profile_service.get_sector_fields(sector)
         current_missing = profile_service.find_first_missing(profile, sector_fields)
     
-    # 3. If user sent a message, extract data for ALL known fields
+    # 3. If user sent a message, try to extract data
+    data_extracted = False
     if request.message:
-        # Build all known field descriptions (basic + sector-specific)
         all_fields = get_all_known_fields(sector)
         
-        # Extract values for any fields mentioned in the message
-        # Pass the current field being asked as context so the LLM can correctly map responses like "No"
-        # Only pass current_field if profile has data (avoids false extraction on the very first message)
         has_prior_data = any(v for v in profile.values() if v)
         extraction_field = current_missing if has_prior_data else None
-        extracted_data = await groq_service.extract_multiple_fields(
-            all_fields, 
-            request.message,
-            current_field=extraction_field
-        )
         
-        if extracted_data:
-            # Process 'sector' FIRST so subsequent field lookups use the correct sector table
-            sector_value = extracted_data.pop("sector", None)
-            if sector_value is not None and (not isinstance(sector_value, str) or sector_value.strip()):
-                profile = apply_field_update_to_db(user.id, "sector", sector_value, profile)
-                sector = sector_value
-                # Refetch sector-specific profile if sector changed
-                new_sector_table = profile_service.get_sector_table(sector)
-                if new_sector_table:
-                    sector_res = supabase.table(new_sector_table).select("*").eq("user_id", user.id).execute()
-                    if sector_res.data:
-                        profile.update(sector_res.data[0])
+        try:
+            extracted_data = await groq_service.extract_multiple_fields(
+                all_fields, 
+                request.message,
+                current_field=extraction_field
+            )
             
-            # Process remaining extracted fields
-            for field_name, field_value in extracted_data.items():
-                if field_value is None or (isinstance(field_value, str) and field_value.strip() == ""):
-                    continue
-                # Skip if value hasn't changed to avoid unnecessary DB writes
-                existing = profile.get(field_name)
-                if existing is not None and str(existing) == str(field_value):
-                    continue
+            if extracted_data:
+                # Process 'sector' FIRST so subsequent field lookups use the correct sector table
+                sector_value = extracted_data.pop("sector", None)
+                if sector_value is not None and (not isinstance(sector_value, str) or sector_value.strip()):
+                    profile = apply_field_update_to_db(user.id, "sector", sector_value, profile)
+                    data_extracted = True
+                    sector = sector_value
+                    # Refetch sector-specific profile if sector changed
+                    new_sector_table = profile_service.get_sector_table(sector)
+                    if new_sector_table:
+                        sector_res = supabase.table(new_sector_table).select("*").eq("user_id", user.id).execute()
+                        if sector_res.data:
+                            profile.update(sector_res.data[0])
                 
-                # Update this field in the database and local profile
-                profile = apply_field_update_to_db(user.id, field_name, field_value, profile)
+                # Process remaining extracted fields
+                for field_name, field_value in extracted_data.items():
+                    if field_value is None or (isinstance(field_value, str) and field_value.strip() == ""):
+                        continue
+                    existing = profile.get(field_name)
+                    if existing is not None and str(existing) == str(field_value):
+                        continue
+                    
+                    profile = apply_field_update_to_db(user.id, field_name, field_value, profile)
+                    data_extracted = True
+                    
+        except Exception as e:
+            logger.error(f"Extraction error for user {user.id}: {e}")
+            # Extraction failed — fall through to re-ask the current question
     
     # 5. Re-identify current phase and missing field (after processing message)
     missing_field = profile_service.find_first_missing(profile, BASIC_FIELDS)
@@ -172,11 +178,18 @@ async def chat_endpoint(request: ChatRequest, user = Depends(get_current_user)):
     language = profile.get("preferred_language", "English")
     field_desc = get_field_info(missing_field)
     
+    # If no data was extracted from the user's response and we're asking about the same field,
+    # add retry context so the LLM politely re-asks instead of repeating the same question
+    retry_context = ""
+    if not data_extracted and current_missing == missing_field and request.message:
+        retry_context = "Note: The user's previous response was not clear or did not provide the requested information. Please ask again politely, acknowledging that you did not understand the previous answer, and re-ask for the information needed."
+    
     question = await groq_service.generate_question(
         field_name=missing_field,
         field_description=field_desc,
         profile=profile,
-        language=language
+        language=language,
+        retry_context=retry_context
     )
     
     return {

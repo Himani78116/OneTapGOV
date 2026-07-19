@@ -10,6 +10,8 @@ Current User Profile Context:
 
 The user's preferred language is: {language}
 
+{retry_context}
+
 TASK:
 Generate a natural, friendly, and concise question to ask the user for this information.
 If the language is not English, translate the question naturally into that language.
