@@ -169,9 +169,7 @@ export default function SchemesPanel() {
                     }}
                 >
                     <div>
-                        <div
-                            style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}
-                        >
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>
                             Recommended Schemes
                         </div>
                         <div style={{ fontSize: 11.5, color: '#94A3B8', marginTop: 2 }}>
@@ -249,15 +247,66 @@ export default function SchemesPanel() {
                         boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
                     }}
                 >
+                    {/* Scheme name + apply button row */}
                     <div
                         style={{
-                            fontSize: 13,
-                            fontWeight: 700,
-                            color: '#0F172A',
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            justifyContent: 'space-between',
+                            gap: 10,
                             marginBottom: 2,
                         }}
                     >
-                        {selected.scheme_name}
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>
+                            {selected.scheme_name}
+                        </div>
+
+                        {/* Official link — only rendered when present */}
+                        {selected.official_link && (
+                            <a
+                                href={selected.official_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 5,
+                                    padding: '5px 12px',
+                                    background: '#2563EB',
+                                    color: '#fff',
+                                    borderRadius: 7,
+                                    fontSize: 11.5,
+                                    fontWeight: 600,
+                                    textDecoration: 'none',
+                                    whiteSpace: 'nowrap',
+                                    flexShrink: 0,
+                                    transition: 'background 150ms ease',
+                                }}
+                                onMouseEnter={(e) =>
+                                    (e.currentTarget.style.background = '#1D4ED8')
+                                }
+                                onMouseLeave={(e) =>
+                                    (e.currentTarget.style.background = '#2563EB')
+                                }
+                            >
+                                {/* External link icon */}
+                                <svg
+                                    width="11"
+                                    height="11"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.2"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    />
+                                </svg>
+                                Apply on Official Portal
+                            </a>
+                        )}
                     </div>
 
                     {/* Passed conditions */}
@@ -320,7 +369,11 @@ export default function SchemesPanel() {
 
                     {/* Document checklist */}
                     <div
-                        style={{ borderTop: '1px solid #F1F5F9', paddingTop: 12, marginTop: 4 }}
+                        style={{
+                            borderTop: '1px solid #F1F5F9',
+                            paddingTop: 12,
+                            marginTop: 4,
+                        }}
                     >
                         <DocumentChecklist
                             scheme={selected}
