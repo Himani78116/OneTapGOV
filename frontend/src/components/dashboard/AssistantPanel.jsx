@@ -136,6 +136,7 @@ export default function AssistantPanel({ session, onProfileUpdate }) {
                 display: 'flex',
                 flexDirection: 'column',
                 boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
+                height: 500,          
             }}
         >
             {/* Header */}
@@ -222,7 +223,7 @@ export default function AssistantPanel({ session, onProfileUpdate }) {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 8,
-                    maxHeight: 280,
+                    maxHeight: 500,
                 }}
             >
                 {messages.map((m, i) => (

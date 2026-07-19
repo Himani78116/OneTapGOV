@@ -4,9 +4,23 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { SECTORS } from "../../lib/constants/schemes";
 
+const LANGUAGE_OPTIONS = [
+  "English",
+  "Hindi",
+  "Marathi",
+  "Bengali",
+  "Tamil",
+  "Telugu",
+  "Kannada",
+  "Gujarati",
+  "Malayalam",
+  "Odia",
+  "Punjabi",
+];
+
 export default function ProfilePage() {
   const router = useRouter();
-  const [form, setForm] = useState({ full_name: "", phone_number: "", sector: "", preferred_language: "en" });
+  const [form, setForm] = useState({ full_name: "", phone_number: "", sector: "", preferred_language: "English" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
@@ -30,11 +44,14 @@ export default function ProfilePage() {
           console.warn('Profile read error:', error.message);
         }
 
+        const rawLang = profile?.preferred_language || user.user_metadata?.preferred_language;
+        const normalizedLang = normalizeLanguage(rawLang);
+
         setForm({
           full_name: profile?.full_name || user.user_metadata?.full_name || '',
           phone_number: profile?.phone_number || user.user_metadata?.phone_number || '',
           sector: profile?.sector || '',
-          preferred_language: profile?.preferred_language || user.user_metadata?.preferred_language || 'en',
+          preferred_language: normalizedLang,
         });
       } catch (e) {
         console.error('Failed to load profile', e);
@@ -44,6 +61,19 @@ export default function ProfilePage() {
     };
     load();
   }, [router]);
+
+  const normalizeLanguage = (value) => {
+    if (!value) return "English";
+    const CODE_MAP = {
+      en: "English", hi: "Hindi", mr: "Marathi", bn: "Bengali",
+      ta: "Tamil", te: "Telugu", kn: "Kannada", gu: "Gujarati",
+      ml: "Malayalam", od: "Odia", or: "Odia", pa: "Punjabi",
+    };
+    const lower = String(value).toLowerCase();
+    if (CODE_MAP[lower]) return CODE_MAP[lower];
+    const match = LANGUAGE_OPTIONS.find(opt => opt.toLowerCase() === lower);
+    return match || "English";
+  };
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -105,11 +135,13 @@ export default function ProfilePage() {
             </select>
 
             <label style={{ fontSize: 13, fontWeight: 600 }}>Preferred language</label>
-            <input name="preferred_language" value={form.preferred_language} onChange={handleChange} style={{ padding: 12, borderRadius: 8, border: '1px solid #E2E8F0' }} />
+            <select name="preferred_language" value={form.preferred_language} onChange={handleChange} required style={{ padding: 12, borderRadius: 8, border: '1px solid #E2E8F0' }}>
+              {LANGUAGE_OPTIONS.map(lang => (<option key={lang} value={lang}>{lang}</option>))}
+            </select>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
               <button type="submit" disabled={saving} style={{ background: '#2563EB', color: '#fff', padding: '10px 14px', border: 'none', borderRadius: 10 }}>{saving ? 'Saving...' : 'Save profile'}</button>
-              <button type="button" onClick={() => { setForm({ full_name: '', phone_number: '', sector: '', preferred_language: 'en' }); setMsg(''); }} style={{ background: '#fff', border: '1px solid #E2E8F0', padding: '10px 14px', borderRadius: 10 }}>Reset</button>
+              <button type="button" onClick={() => { setForm({ full_name: '', phone_number: '', sector: '', preferred_language: 'English' }); setMsg(''); }} style={{ background: '#fff', border: '1px solid #E2E8F0', padding: '10px 14px', borderRadius: 10 }}>Reset</button>
             </div>
 
             {msg && <div style={{ marginTop: 8, color: msg.includes('success') ? '#16A34A' : '#DC2626' }}>{msg}</div>}

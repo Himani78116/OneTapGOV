@@ -189,7 +189,7 @@ export default function Dashboard() {
                 letterSpacing: '-0.02em',
               }}
             >
-              {greeting()}, {firstName} 👋
+              {greeting()}, {firstName}
             </span>
             <span
               style={{
