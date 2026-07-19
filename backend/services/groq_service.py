@@ -14,13 +14,14 @@ class GroqService:
         # Using a highly capable Llama 3 model available on Groq
         self.model_id = "llama-3.3-70b-versatile"
 
-    async def generate_question(self, field_name: str, field_description: str, profile: dict, language: str = "English"):
+    async def generate_question(self, field_name: str, field_description: str, profile: dict, language: str = "English", retry_context: str = ""):
         context = "\n".join([f"{k}: {v}" for k, v in profile.items() if v])
         prompt = QUESTION_PROMPT.format(
             field_name=field_name,
             field_description=field_description,
             profile_context=context or "New user, no data yet.",
-            language=language
+            language=language,
+            retry_context=retry_context
         )
         
         response = self.client.chat.completions.create(
