@@ -2,7 +2,7 @@ import os
 import json
 from groq import Groq
 from prompts.question_prompt import QUESTION_PROMPT
-from prompts.extraction_prompt import EXTRACTION_PROMPT
+from prompts.extraction_prompt import EXTRACTION_PROMPT, MULTI_FIELD_EXTRACTION_PROMPT
 
 class GroqService:
     def __init__(self):
@@ -46,3 +46,33 @@ class GroqService:
             return json.loads(response.choices[0].message.content)
         except:
             return {field_name: None}
+
+    async def extract_multiple_fields(self, fields_and_descriptions: dict, user_message: str):
+        """
+        Extract values for ANY of the given fields from the user's message.
+        fields_and_descriptions: dict mapping field_name -> field_description
+        Returns a dict of field_name -> extracted_value for all found fields
+        """
+        if not fields_and_descriptions:
+            return {}
+            
+        formatted_fields = "\n".join([
+            f"- {field}: {desc}" 
+            for field, desc in fields_and_descriptions.items()
+        ])
+        
+        prompt = MULTI_FIELD_EXTRACTION_PROMPT.format(
+            fields_and_descriptions=formatted_fields,
+            user_message=user_message
+        )
+        
+        response = self.client.chat.completions.create(
+            model=self.model_id,
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"}
+        )
+        
+        try:
+            return json.loads(response.choices[0].message.content)
+        except:
+            return {}
