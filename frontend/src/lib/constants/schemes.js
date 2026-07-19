@@ -11,6 +11,11 @@ export const SECTORS = [
             "Central Sector Scholarship",
             "INSPIRE Scholarship",
             "NSP Merit Scholarship",
+            "National Means-cum-Merit Scholarship (NMMS)",
+            "PM YASASVI Scholarship",
+            "Merit-cum-Means Scholarship for Minorities",
+            "National Fellowship for Higher Education of ST Students",
+            "Prime Minister's Scholarship Scheme for Wards of Ex-Servicemen",
         ],
     },
     {
@@ -24,6 +29,11 @@ export const SECTORS = [
             "Working Women Hostel Scheme",
             "Mahila Samman Savings Certificate",
             "Beti Bachao Beti Padhao",
+            "Pradhan Mantri Matru Vandana Yojana",
+            "Mahila Shakti Kendra",
+            "One Stop Centre Scheme",
+            "Stand-Up India",
+            "Support to Training and Employment Programme (STEP)",
         ],
     },
     {
@@ -37,6 +47,11 @@ export const SECTORS = [
             "PMFBY",
             "Soil Health Card Scheme",
             "Agriculture Infrastructure Fund",
+            "Pradhan Mantri Kisan Maandhan Yojana",
+            "Rashtriya Krishi Vikas Yojana",
+            "Pradhan Mantri Krishi Sinchayee Yojana",
+            "Paramparagat Krishi Vikas Yojana",
+            "National Agriculture Market (e-NAM)",
         ],
     },
 ];
@@ -176,22 +191,30 @@ export const PROFILE_OPTIONS = {
     ],
 };
 
+// NOTE: SCHEME_MATCHES below is a curated "top 3 preview" per role used on the
+// eligibility-preview screen, not the full scheme list — the full list per
+// sector now lives in SECTORS above and in the backend data/*.py files, each
+// of which includes an "official_link" field pointing to the scheme's
+// official government portal.
 export const SCHEME_MATCHES = {
     Student: [
         {
             name: "AICTE Pragati Scholarship",
             strength: "High",
             documents: ["Aadhaar Card", "Income Certificate", "Admission Letter", "Fee Receipt", "Bank Passbook"],
+            officialLink: "https://scholarships.gov.in",
         },
         {
             name: "Post Matric Scholarship",
             strength: "High",
             documents: ["Aadhaar Card", "Income Certificate", "Mark Sheet", "Bank Passbook"],
+            officialLink: "https://scholarships.gov.in",
         },
         {
             name: "NSP Merit Scholarship",
             strength: "Medium",
             documents: ["Aadhaar Card", "Mark Sheet", "Bank Passbook"],
+            officialLink: "https://scholarships.gov.in",
         },
     ],
     Farmer: [
@@ -199,16 +222,19 @@ export const SCHEME_MATCHES = {
             name: "PM-KISAN",
             strength: "High",
             documents: ["Aadhaar Card", "Land Records", "Bank Passbook"],
+            officialLink: "https://pmkisan.gov.in",
         },
         {
             name: "Kisan Credit Card",
             strength: "High",
             documents: ["Aadhaar Card", "Land Records", "Income Certificate"],
+            officialLink: "https://www.myscheme.gov.in/schemes/kcc",
         },
         {
             name: "PMFBY",
             strength: "Medium",
             documents: ["Aadhaar Card", "Land Records", "Bank Passbook"],
+            officialLink: "https://pmfby.gov.in",
         },
     ],
     "Woman Entrepreneur": [
@@ -216,16 +242,19 @@ export const SCHEME_MATCHES = {
             name: "Mahila Samman Savings Certificate",
             strength: "High",
             documents: ["Aadhaar Card", "PAN Card", "Bank Passbook"],
+            officialLink: "https://www.nsiindia.gov.in",
         },
         {
             name: "Sukanya Samriddhi Yojana",
             strength: "High",
             documents: ["Aadhaar Card", "Birth Certificate", "Bank Passbook"],
+            officialLink: "https://www.nsiindia.gov.in",
         },
         {
-            name: "Ujjwala Yojana",
+            name: "Stand-Up India",
             strength: "Medium",
-            documents: ["Aadhaar Card", "BPL Card", "Bank Passbook"],
+            documents: ["Aadhaar Card", "PAN Card", "Business Plan", "Bank Passbook"],
+            officialLink: "https://www.standupmitra.in",
         },
     ],
     "Senior Citizen": [
@@ -233,16 +262,19 @@ export const SCHEME_MATCHES = {
             name: "Indira Gandhi National Old Age Pension",
             strength: "High",
             documents: ["Aadhaar Card", "Age Certificate", "Income Certificate"],
+            officialLink: "https://nsap.nic.in",
         },
         {
             name: "Pradhan Mantri Vaya Vandana Yojana",
             strength: "High",
             documents: ["Aadhaar Card", "PAN Card", "Bank Passbook"],
+            officialLink: "https://www.licindia.in",
         },
         {
             name: "Senior Citizen Savings Scheme",
             strength: "Medium",
             documents: ["Aadhaar Card", "PAN Card", "Age Certificate"],
+            officialLink: "https://www.nsiindia.gov.in",
         },
     ],
     "Job Seeker": [
@@ -250,16 +282,19 @@ export const SCHEME_MATCHES = {
             name: "PM Rojgar Protsahan Yojana",
             strength: "High",
             documents: ["Aadhaar Card", "Educational Certificate", "Bank Passbook"],
+            officialLink: "https://www.pmrpy.gov.in",
         },
         {
             name: "Pradhan Mantri Kaushal Vikas Yojana",
             strength: "High",
             documents: ["Aadhaar Card", "Educational Certificate"],
+            officialLink: "https://www.pmkvyofficial.org",
         },
         {
             name: "National Career Service Portal",
             strength: "Medium",
             documents: ["Aadhaar Card", "Resume"],
+            officialLink: "https://www.ncs.gov.in",
         },
     ],
 };
